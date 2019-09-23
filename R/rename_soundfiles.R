@@ -42,9 +42,9 @@ rename_soundfiles <- function(stimuli,
     dir.create(path = paste0(path, "/backup"))
     file.copy(paste0(path, "/", files), paste0(path, "/backup/", files))
   }
-  if(length(files) > length(stimuli)){
+  if(length(files) > length(unique(stimuli))){
     stop("Number of files is greater then number of stimuli")
-  } else if(length(files) < length(stimuli)){
+  } else if(length(files) < length(unique(stimuli))){
     stop("Number of files is smaller then number of stimuli")
   }
   if(is.null(order)){
@@ -59,7 +59,8 @@ rename_soundfiles <- function(stimuli,
       stimuli[order]
       }
 
-  file.rename(paste0(path, "/", files),
-              paste0(path, "/", prefix, medial_part, suffix, ".", extension[1]))
+  result <- file.rename(
+    paste0(path, "/", files),
+    paste0(path, "/", prefix, medial_part, suffix, ".", extension[1]))
 }
 

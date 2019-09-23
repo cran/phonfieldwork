@@ -1,6 +1,6 @@
 #' Creates a presentation
 #'
-#' Creates a html or powerpoint presentation in a working directory from list of words and translations.
+#' Creates an html or powerpoint presentation in a working directory from list of words and translations.
 #'
 #' @author George Moroz <agricolamz@gmail.com>
 #'
@@ -29,7 +29,7 @@ create_presentation <- function(stimuli,
   output_format <- ifelse(output_format == "pptx",
                    "powerpoint_presentation",
                    "ioslides_presentation")
-  rmd <- paste0(c(paste0("---\noutput: ",
+  rmd <- paste0(c(paste0("---\ntitle: 'Use arrows for scrolling'\noutput: ",
                          output_format,
                          "\n---\n\n"),
                   collapse = ""),
@@ -44,7 +44,8 @@ create_presentation <- function(stimuli,
   if(isTRUE(render)){
     rmarkdown::render(input = tmp,
                       output_file = output_file,
-                      output_dir = normalizePath(output_dir))
+                      output_dir = normalizePath(output_dir),
+                      quiet = TRUE)
   } else {
     tmp
   }
