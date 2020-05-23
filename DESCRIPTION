@@ -1,7 +1,7 @@
 Package: phonfieldwork
 Type: Package
 Title: Linguistic Phonetic Fieldwork Tools
-Version: 0.0.3
+Version: 0.0.4
 Depends: R (>= 3.5.0)
 Imports: tuneR, phonTools, grDevices, utils, graphics, rmarkdown
 Author: George Moroz
@@ -13,8 +13,8 @@ URL: https://CRAN.R-project.org/package=phonfieldwork,
 BugReports: https://github.com/agricolamz/phonfieldwork/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 NeedsCompilation: no
-Packaged: 2019-12-31 08:49:23 UTC; agricolamz
+Packaged: 2020-05-23 19:14:20 UTC; agricolamz
 Repository: CRAN
-Date/Publication: 2020-01-07 11:50:02 UTC
+Date/Publication: 2020-05-23 19:40:02 UTC
