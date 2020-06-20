@@ -4,10 +4,12 @@
 \alias{get_textgrid_names}
 \title{Extract TextGrid names}
 \usage{
-get_textgrid_names(textgrid)
+get_textgrid_names(textgrid, encoding = "unknown")
 }
 \arguments{
 \item{textgrid}{path to the TextGrid}
+
+\item{encoding}{TextGrid encoding. Import from \code{readLines()} function.}
 }
 \value{
 return a vector of tier names from given TextGrid

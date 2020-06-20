@@ -6,6 +6,8 @@
 #'
 #' @param textgrid string with a filename or path to the TextGrid
 #' @param tier value that could be either ordinal number of the tier either name of the tier. By default is '1'.
+#' @param encoding TextGrid encoding. Import from \code{readLines()} function.
+#'
 #' @return a dataframe with columns:  \code{id}, \code{start} and \code{end annotation} (if it is an interval tier)
 #'
 #' @examples
@@ -14,11 +16,11 @@
 #' @export
 #'
 
-tier_to_df <- function(textgrid, tier = 1){
+tier_to_df <- function(textgrid, tier = 1, encoding = "unknown"){
   if(grepl("TextGrid", textgrid[2])){
     tg <- textgrid
   } else{
-    tg <- readLines(textgrid)
+    tg <- readLines(textgrid, encoding = encoding)
   }
   # get start and end info about tiers --------------------------------------
   starts <- grep("item \\[\\d{1,}\\]:", tg)

@@ -29,6 +29,7 @@
 #' @return no output
 #' @export
 #' @importFrom tuneR readWave
+#' @importFrom tuneR readMP3
 #' @importFrom tuneR bind
 #' @importFrom tuneR writeWave
 #'
@@ -39,21 +40,21 @@ concatenate_soundfiles <- function(file_name,
 
 # concatenate sounds ------------------------------------------------------
 
-  files <- list.files(path = path)
+  files <- list.files(path = path, pattern = ".wav$")
 
-  unlist(
-    lapply(seq_along(files), function(i){
-      res <- unlist(strsplit(files[i], "\\."))
-      res[length(res)]
-    })) ->
-    extension
-
-  files <- files[which(tolower(extension) %in% "wav")]
   if(length(files) == 0){
     stop("There is no any .wav files")
   }
 
-  list <- lapply(paste0(path, "/", files), tuneR::readWave)
+  list <- lapply(paste0(path, "/", files), function(file_name){
+    ext <- tolower(substring(file_name, regexpr("\\..*$", file_name) + 1))
+    if(ext == "wave"|ext == "wav"){
+      s <- tuneR::readWave(file_name)
+    } else if(ext == "mp3"){
+      s <- tuneR::readMP3(file_name)
+    } else{
+      stop("The concatenate_soundfiles() functions works only with .wav(e) or .mp3 formats")
+    }})
   sound <- Reduce(tuneR::bind, list)
   tuneR::writeWave(sound, paste0(path, "/", file_name, ".wav"))
 # create a TextGrid -------------------------------------------------------
@@ -68,7 +69,7 @@ concatenate_soundfiles <- function(file_name,
                               Index = seq_along(files),
                               StartTime = start_time,
                               EndTime = end_time,
-                              Label = files,
+                              Label = sort(files),
                               stringsAsFactors = FALSE)
     writeLines(c('File type = "ooTextFile"',
                  'Object class = "TextGrid"',

@@ -2,10 +2,15 @@
 % Please edit documentation in R/draw_sound.R
 \name{draw_sound}
 \alias{draw_sound}
-\title{Draw Oscilogram and Spectrogram}
+\title{Draw Oscilogram, Spectrogram and annotation}
 \usage{
 draw_sound(
   file_name,
+  textgrid = NULL,
+  from = NULL,
+  to = NULL,
+  zoom = NULL,
+  text_size = 1,
   output_file = NULL,
   title = NULL,
   spectrum_colors = FALSE,
@@ -16,14 +21,26 @@ draw_sound(
   output_height = 500,
   output_units = "px",
   sounds_from_folder = NULL,
+  textgrids_from_folder = NULL,
   pic_folder_name = "pics",
+  title_as_filename = TRUE,
   prefix = NULL,
   suffix = NULL,
   autonumber = FALSE
 )
 }
 \arguments{
-\item{file_name}{a soundfile}
+\item{file_name}{a sound file}
+
+\item{textgrid}{a source for TextGrid annotation plot}
+
+\item{from}{Time in seconds at which to start extraction.}
+
+\item{to}{Time in seconds at which to stop extraction.}
+
+\item{zoom}{numeric vector of zoom window time (in seconds). It will draw the whole oscilogram and part of the spectrogram.}
+
+\item{text_size}{numeric, text size (default = 1).}
 
 \item{output_file}{the name of the output file}
 
@@ -43,9 +60,13 @@ draw_sound(
 
 \item{output_units}{the units in which height and width are given. Can be "px" (pixels, the default), "in" (inches), "cm" or "mm".}
 
-\item{sounds_from_folder}{path to a folder with multiple .wav files. If this argument is not \code{NULL}, then the function goes through all files and create picture for all of them.}
+\item{sounds_from_folder}{path to a folder with multiple sound files. If this argument is not \code{NULL}, then the function goes through all files and creates picture for all of them.}
+
+\item{textgrids_from_folder}{path to a folder with multiple .TextGrid files. If this argument is not \code{NULL}, then the function goes through all files and create picture for all of them.}
 
 \item{pic_folder_name}{name for a folder, where all pictures will be stored in case \code{sounds_from_folder} argument is not \code{NULL}}
+
+\item{title_as_filename}{logical. If true adds filename title to each picture}
 
 \item{prefix}{prefix for all file names for created pictures in case \code{sounds_from_folder} argument is not \code{NULL}}
 
@@ -54,10 +75,14 @@ draw_sound(
 \item{autonumber}{if TRUE automatically add number of extracted sound to the file_name. Prevents from creating a duplicated files and wrong sorting.}
 }
 \value{
-Oscilogram and Spectrogram plot.
+Oscilogram and spectrogram plot (and possibly TextGrid annotation).
 }
 \description{
-Create oscilogram and spectrogram plot. Based on \code{phonTools::spectrogram}.
+Create oscilogram and spectrogram plot.
+}
+\examples{
+draw_sound(system.file("extdata", "test.wav", package = "phonfieldwork"))
+
 }
 \author{
 George Moroz <agricolamz@gmail.com>

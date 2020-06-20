@@ -7,11 +7,10 @@
 create_viewer(
   audio_dir,
   picture_dir,
-  textgrid,
-  tiers = 1,
-  merge_column,
-  caption_column = NULL,
-  about = "Created with the `phonfieldworks` package (Moroz 2019).",
+  table,
+  captions = NULL,
+  sorting_columns = NULL,
+  about = "Created with the `phonfieldworks` package (Moroz 2020).",
   output_dir,
   output_file = "stimuli_viewer",
   render = TRUE
@@ -22,13 +21,11 @@ create_viewer(
 
 \item{picture_dir}{path to the directory with pictures}
 
-\item{textgrid}{string with a filename or path to the TextGrid}
+\item{table}{data frame with data ordered according to files in the audio folder}
 
-\item{tiers}{vecors of numbers or names of TextGrid tiers. They merged into a table and used in the created viewer.}
+\item{captions}{vector of strings that will be used for captions for a picture.}
 
-\item{merge_column}{string with a column name that will be used for merging stimuli and video and audio viewer.}
-
-\item{caption_column}{string with a column name that will be used for captions for a picture (by defaul is the same as merge_column).}
+\item{sorting_columns}{vector of strings for sorting the result column}
 
 \item{about}{it is either .Rmd file or string with the text for about}
 

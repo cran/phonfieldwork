@@ -5,6 +5,8 @@
 #' @author George Moroz <agricolamz@gmail.com>
 #'
 #' @param textgrid path to the TextGrid
+#' @param encoding TextGrid encoding. Import from \code{readLines()} function.
+#'
 #' @return return a vector of tier names from given TextGrid
 #' @examples
 #' get_textgrid_names(example_textgrid)
@@ -12,12 +14,12 @@
 #' @export
 #'
 
-get_textgrid_names <- function(textgrid){
+get_textgrid_names <- function(textgrid, encoding = "unknown"){
 # read TextGrid -----------------------------------------------------------
   if(grepl("TextGrid", textgrid[2])){
     tg <- textgrid
   } else{
-    tg <- readLines(normalizePath(textgrid))
+    tg <- readLines(normalizePath(textgrid), encoding = encoding)
   }
 
 # extract names of tiers --------------------------------------------------

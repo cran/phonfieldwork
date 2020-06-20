@@ -10,6 +10,7 @@
 #' @param each non-negative integer. Each element of x is repeated each times
 #' @param backup logical. If TRUE (by default) it creates a backup tier.
 #' @param write logical. If TRUE (by dafault) it overwrites an existing tier.
+#' @param encoding TextGrid encoding. Import from \code{readLines()} function.
 #'
 #' @return a string that contain TextGrid. If argument write is \code{TRUE}, then no output.
 #'
@@ -19,21 +20,20 @@
 #'
 #' @export
 #'
-#' @importFrom tuneR readWave
-#'
 
 annotate_textgrid <- function(annotation,
                               textgrid,
                               tier = 1,
                               each = 1,
                               backup = TRUE,
-                              write = TRUE) {
+                              write = TRUE,
+                              encoding = "unknown") {
 
 # read TextGrid -----------------------------------------------------------
   if(grepl("TextGrid", textgrid[2])){
     tg <- textgrid
   } else{
-    tg <- readLines(normalizePath(textgrid))
+    tg <- readLines(normalizePath(textgrid), encoding = encoding)
   }
 
 # get start and end info about tiers --------------------------------------

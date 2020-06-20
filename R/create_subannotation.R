@@ -10,6 +10,7 @@
 #' @param each non-negative integer. Each new blank annotation is repeated every first, second or ... times
 #' @param omit_blank logical. If TRUE (by dafault) it doesn't create subannotation for empy annotations.
 #' @param overwrite logical. If TRUE (by dafault) it overwrites an existing tier.
+#' @param encoding TextGrid encoding. Import from \code{readLines()} function.
 #'
 #' @return a string that contain TextGrid. If argument write is \code{TRUE}, then no output.
 #'
@@ -25,13 +26,14 @@ create_subannotation <- function(textgrid,
                                  n_of_annotations = 4,
                                  each = 1,
                                  omit_blank = TRUE,
-                                 overwrite = TRUE){
+                                 overwrite = TRUE,
+                                 encoding = "unknown"){
 
 # read TextGrid -----------------------------------------------------------
   if(grepl("TextGrid", textgrid[2])){
     tg <- textgrid
   } else{
-    tg <- readLines(normalizePath(textgrid))
+    tg <- readLines(normalizePath(textgrid), encoding = encoding)
   }
 
   df <- phonfieldwork::tier_to_df(tg, tier = tier)

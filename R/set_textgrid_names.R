@@ -8,6 +8,8 @@
 #' @param tiers integer vector with the number of tiers that should be named
 #' @param names vector of strings with new names for TextGrid tiers
 #' @param write logical. If TRUE (by dafault) it overwrites an existing tier
+#' @param encoding TextGrid encoding. Import from \code{readLines()} function.
+#'
 #' @return a string that contain TextGrid. If argument write is \code{TRUE}, then no output.
 #' @examples
 #' set_textgrid_names(example_textgrid, tiers = 3, names = "new_name", write = FALSE)
@@ -15,12 +17,16 @@
 #' @export
 #'
 
-set_textgrid_names <- function(textgrid, tiers, names, write = TRUE){
+set_textgrid_names <- function(textgrid,
+                               tiers,
+                               names,
+                               write = TRUE,
+                               encoding = "unknown"){
   # read TextGrid -----------------------------------------------------------
   if(grepl("TextGrid", textgrid[2])){
     tg <- textgrid
   } else{
-    tg <- readLines(normalizePath(textgrid))
+    tg <- readLines(normalizePath(textgrid), encoding = encoding)
   }
 
 # rewrite names in TextGrid -----------------------------------------------

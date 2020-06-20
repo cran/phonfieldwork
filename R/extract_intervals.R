@@ -11,6 +11,8 @@
 #' @param suffix character vector containing suffix(es) for file names
 #' @param autonumber if TRUE automatically add number of extracted sound to the file_name. Prevents from creating a duplicated files and wrong sorting.
 #' @param path path to the directory where create extracted soundfiles.
+#' @param encoding TextGrid encoding. Import from \code{readLines()} function.
+#'
 #' @return no output
 #' @examples
 #' # create two files in a temprary folder "test_folder"
@@ -28,6 +30,7 @@
 #'
 #' @export
 #' @importFrom tuneR readWave
+#' @importFrom tuneR readMP3
 #' @importFrom tuneR bind
 #' @importFrom tuneR writeWave
 #'
@@ -38,12 +41,23 @@ extract_intervals <- function(file_name,
                               prefix = NULL,
                               suffix = NULL,
                               autonumber = TRUE,
-                              path){
-  s <- tuneR::readWave(file_name)
+                              path,
+                              encoding = "unknown"){
+
+  ext <- tolower(substring(file_name, regexpr("\\..*$", file_name) + 1))
+
+  if(ext == "wave"|ext == "wav"){
+    s <- tuneR::readWave(file_name)
+  } else if(ext == "mp3"){
+    s <- tuneR::readMP3(file_name)
+  } else{
+    stop("The draw_sound() functions works only with .wav(e) or .mp3 formats")
+  }
+
   if(grepl("TextGrid", textgrid[2])){
     tg <- textgrid
   } else{
-    tg <- readLines(textgrid)
+    tg <- readLines(textgrid, encoding = encoding)
   }
 
 # get start, end and annotation -------------------------------------------
@@ -65,7 +79,6 @@ extract_intervals <- function(file_name,
                                      xunit = "time")
     tuneR::writeWave(s_fragment, paste0(path, "/", annotations[i], ".wav")) ->
       results
-    Sys.sleep(0.1)
-  }
-  )
+    Sys.sleep(0.05)
+  }) -> supress_message
 }
