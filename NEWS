@@ -1,15 +1,32 @@
+phonfieldwork 0.0.7 (10.07.2020)
+  - add a vigniettes about ethical research and introduction to work with phonfieldwork
+  - add an argument "textgrids_from_folder" to the "textgrid_to_df()" function
+  - add an argument "exbs_from_folder" to the "exb_to_df()" function
+  - add an argument "eafs_from_folder" to the "eaf_to_df()" function
+  - add Raven style annotations
+  - replace freqmax with frequency_range argument
+  - replace example_textgrid with systemfile() call
+  - add window annotation to spectrograms
+  - add bridge to lingtypology package: "map" argument in the "create_viewer()" function
+  - make it possible to visualise all types of annotations with the "draw_sound()" function
+  - add the "source" column to all "..._to_df()" functions
+  - add the "audacity_to_df" function
+  - add the "srt_to_df" function
+  - chage textgrid related functions' output from "start", "end", "annotation" to "time_start", "time_end", "content"
+  - correct point tier visualization
+
 phonfieldwork 0.0.6 (20.06.2020)
   - add "encoding" arguments to functions for working with TextGrids
   - add "textgrid" argument to the "draw_sound()" function
   - change subgraphs alignment in the "draw_sound()" function including textgrid annotation
   - add "from" and "to" arguments to the "draw_sound()" function
-  - add mp3 format reading options to all functions that work with sounds
-  - add text_size argument to the "draw_sound()" function
-  - add zoom argument to the "draw_sound()" function
+  - add .mp3 format reading options to all functions that work with sounds
+  - add "text_size" argument to the "draw_sound()" function
+  - add "zoom"" argument to the "draw_sound()" function
   - add the "get_sound_duration()" function
   - fix ploting of multiple sounds with multiple .TextGrids
   - add an argument "title_as_filename" to the "draw_sound()" function
-  - change textgrid asociated arguments of the "create_viewer()" function to "table" argument; as a result users now need to provide a table for the annotation viewer and not a TextGrid
+  - change .TextGrid associated arguments of the "create_viewer()" function to "table" argument; as a result users now need to provide a table for the annotation viewer and not a .TextGrid
 
 phonfieldwork 0.0.5 (07.06.2020)
   - add "textgrid_to_df()" function for reading Praat files

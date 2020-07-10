@@ -5,16 +5,20 @@
 #' @author George Moroz <agricolamz@gmail.com>
 #'
 #' @param file_name a sound file
-#' @param textgrid a source for TextGrid annotation plot
+#' @param annotation a source for annotation files (e. g. TextGrid)
 #' @param from Time in seconds at which to start extraction.
 #' @param to Time in seconds at which to stop extraction.
 #' @param zoom numeric vector of zoom window time (in seconds). It will draw the whole oscilogram and part of the spectrogram.
 #' @param text_size numeric, text size (default = 1).
-#' @param spectrum_colors if TRUE, a color spectrogram will be displayed. If FALSE, greyscale is used. If a vector of colors is provided, these colors are used to create the spectrogram.
 #' @param title the title for the plot
-#' @param maximum_frequency the maximum frequency to be displayed for the spectrogram up to a maximum of fs/2. This is set to 5000 Hz by default
+#' @param freq_scale a string indicating the type of frequency scale. Supported types are: "Hz" and "kHz".
+#' @param spectrum_info logical. If \code{TRUE} then add information about windo method and params.
+#' @param preemphasisf Preemphasis of 6 dB per octave is added to frequencies above the specified frequency. For no preemphasis, set to a frequency higher than the sampling frequency.
+#' @param frequency_range vector with the range of frequencies to be displayed for the spectrogram up to a maximum of fs/2. This is set to 0-5 kHz by default
 #' @param dynamic_range values greater than this many dB below the maximum will be displayed in the same color
 #' @param window_length the desired analysis window length in milliseconds.
+#' @param window A string indicating the type of window desired. Supported types are: "rectangular", "hann", "hamming", "cosine", "bartlett", "gaussian", and "kaiser".
+#' @param windowparameter The parameter necessary to generate the window, if appropriate. At the moment, the only windows that require parameters are the Kaiser and Gaussian windows. By default, these are set to 2 for kaiser and 0.4 for gaussian windows.
 #' @param output_file the name of the output file
 #' @param output_width the width of the device
 #' @param output_height the height of the device
@@ -26,12 +30,17 @@
 #' @param prefix prefix for all file names for created pictures in case \code{sounds_from_folder} argument is not \code{NULL}
 #' @param suffix suffix for all file names for created pictures in case \code{sounds_from_folder} argument is not \code{NULL}
 #' @param autonumber if TRUE automatically add number of extracted sound to the file_name. Prevents from creating a duplicated files and wrong sorting.
+#' @param raven_annotation Raven (Center for Conservation Bioacoustics) style annotations (boxes over spectrogram). The dataframe that contains \code{time_start}, \code{time_end}, \code{freq_low} and \code{freq_high} columns. Optional columns are \code{colors} and \code{content}.
 #'
 #' @return Oscilogram and spectrogram plot (and possibly TextGrid annotation).
 #'
 #' @examples
+#' \dontrun{
 #' draw_sound(system.file("extdata", "test.wav", package = "phonfieldwork"))
 #'
+#' draw_sound(system.file("extdata", "test.wav", package = "phonfieldwork"),
+#'            system.file("extdata", "test.TextGrid", package = "phonfieldwork"))
+#' }
 #' @export
 #'
 #' @importFrom tuneR readWave
@@ -44,23 +53,30 @@
 #' @importFrom graphics par
 #' @importFrom graphics axis
 #' @importFrom graphics text
+#' @importFrom graphics points
 #' @importFrom graphics abline
 #' @importFrom graphics segments
 #' @importFrom graphics rect
+#' @importFrom graphics plot
 #'
 
 draw_sound <- function(file_name,
-                       textgrid = NULL,
+                       annotation = NULL,
                        from = NULL,
                        to = NULL,
                        zoom = NULL,
                        text_size = 1,
                        output_file = NULL,
                        title = NULL,
-                       spectrum_colors = FALSE,
-                       maximum_frequency = 5000,
+                       freq_scale = "kHz",
+                       frequency_range = c(0, 5),
                        dynamic_range = 50,
                        window_length = 5,
+                       window = "kaiser",
+                       windowparameter = -1,
+                       preemphasisf = 50,
+                       spectrum_info = TRUE,
+                       raven_annotation = NULL,
                        output_width = 750,
                        output_height = 500,
                        output_units = "px",
@@ -85,12 +101,18 @@ draw_sound <- function(file_name,
         } else if(ext == "mp3"){
           s <- tuneR::readMP3(file_name)
         } else{
+          graphics::par(oma=c(0,0,0,0),
+                        mai=c(1.02, 0.82, 0.82, 0.42),
+                        fig=c(0,1,0,1))
           stop("The draw_sound() functions works only with .wav(e) or .mp3 formats")
         }
       }
 
       if(!is.null(from)&!is.null(to)){
         if(from >= to){
+          graphics::par(oma=c(0,0,0,0),
+                        mai=c(1.02, 0.82, 0.82, 0.42),
+                        fig=c(0,1,0,1))
           stop("Argument from should be smaler then argument to.")
         }
         if(to > length(s@left)/s@samp.rate){
@@ -116,13 +138,13 @@ draw_sound <- function(file_name,
       # plot oscilogram ---------------------------------------------------------
       low_boundary <- ifelse(is.null(zoom), 0.75, 0.83)
 
-      graphics::par(oma=c(0,0,title_space,0),
-                    mai=c(0, 0, 0, 0),
-                    fig=c(0.1, 0.98, low_boundary, 1))
+      graphics::par(oma=c(0, 0,title_space,0),
+                    mai=c(0, 0.8, 0, 0.2),
+                    fig=c(0, 0.97, low_boundary, 1))
 
       n <- max(abs(range(s@left)))
       s_range <- floor(n/10^(nchar(n)-1))*10^(nchar(n)-1)
-      plot(y = s@left,
+      graphics::plot(y = s@left,
            x = seq(0, length(s@left)/s@samp.rate*1000,
                    length.out = length(s@left)),
            type = "l",
@@ -142,8 +164,8 @@ draw_sound <- function(file_name,
         graphics::axis(1, las=1)
       }
       # plot spectrogram --------------------------------------------------------
-      low_boundary <- ifelse(is.null(textgrid), 0.08, 0.27)
-      graphics::par(fig=c(0.1, 0.98, low_boundary, 0.75), new=TRUE)
+      low_boundary <- ifelse(is.null(annotation), 0.1, 0.27)
+      graphics::par(fig=c(0, 0.97, low_boundary, 0.75), new=TRUE)
       if(!is.null(zoom)){
         for_spectrum <- tuneR::extractWave(s,
                                            from = zoom[1],
@@ -155,48 +177,83 @@ draw_sound <- function(file_name,
       draw_spectrogram(for_spectrum@left,
                        fs = for_spectrum@samp.rate,
                        text_size = text_size,
-                       windowlength = window_length,
-                       colors = spectrum_colors,
-                       maxfreq = maximum_frequency,
-                       dynamicrange = dynamic_range,
-                       x_axis = is.null(textgrid))
+                       window_length = window_length,
+                       window = window,
+                       windowparameter = windowparameter,
+                       freq_scale = freq_scale,
+                       frequency_range = frequency_range,
+                       dynamic_range = dynamic_range,
+                       preemphasisf = preemphasisf,
+                       spectrum_info = spectrum_info,
+                       raven_annotation = raven_annotation,
+                       x_axis = is.null(annotation))
+
       # plot textgrid -----------------------------------------------------------
-      if(!is.null(textgrid)){
-        graphics::par(fig=c(0.1, 0.98, 0.09, 0.27), new=TRUE)
-        df <- textgrid_to_df(textgrid)
+      if(!is.null(annotation)){
+        graphics::par(fig=c(0, 0.97, 0.1, 0.27), new=TRUE)
+
+        if(class(annotation) != "data.frame"){
+          df <- phonfieldwork::textgrid_to_df(annotation)
+        } else{
+          df <- annotation
+        }
+
+        if(sum(c("time_start", "time_end", "content") %in% names(df)) != 3){
+          graphics::par(oma=c(0,0,0,0),
+                        mai=c(1.02, 0.82, 0.82, 0.42),
+                        fig=c(0,1,0,1))
+          stop('data.frame that you provide to annotation argument should contain "time_start", "time_end" and "content" columns')
+        }
+
+        if(!("tier" %in% names(df))){
+          df$tier <- 1
+        }
 
         if(!is.null(zoom)){
           from <- zoom[1]
           to <- zoom[2]
         }
 
-        df <- df[df$start >= from,]
-        df <- df[df$end <= to,]
+        # remove annotation that are out of scope
+        df <- df[df$time_start >= from,]
+        df <- df[df$time_end <= to,]
+
+        df$time_start <- (df$time_start-from)*1000
+        df$time_end <- (df$time_end-from)*1000
+
+        # in case annotation exceed the length of the  sound, change it value to sound length
+        df$time_end <- ifelse(
+          df$time_start < length(for_spectrum@left)/for_spectrum@samp.rate*1000 &
+            df$time_end > length(for_spectrum@left)/for_spectrum@samp.rate*1000,
+          length(for_spectrum@left)/for_spectrum@samp.rate,
+          df$time_end
+        )
+
         if(nrow(df) < 1){
           graphics::par(oma=c(0,0,0,0),
                         mai=c(1.02, 0.82, 0.82, 0.42),
                         fig=c(0,1,0,1))
           stop("There is no annotion in selected time interval.")
         }
-        df$start <- (df$start-from)*1000
-        df$end <- (df$end-from)*1000
+
         if(from != 0){
           lapply(unique(df$tier), function(i){
             extended <- data.frame(id = NA,
-                                   start = 0,
-                                   end = min(df[df$tier == i,]$start),
-                                   annotation = "",
-                                   tier = i)
+                                   time_start = 0,
+                                   time_end = min(df[df$tier == i,]$time_start),
+                                   content = "",
+                                   tier = i,
+                                   source = unique(df$source))
             df <<- rbind(extended, df)
           })
         }
         df <- df[order(df$tier),]
-        df$mid_point <- df$start + (df$end - df$start)/2
+        df$mid_point <- df$time_start + (df$time_end - df$time_start)/2
         df$fake_y <- max(df$tier) - min(df$tier)
         df$tier <- -df$tier
-        plot(x = df$mid_point,
+        graphics::plot(x = df$mid_point,
              y = df$fake_y,
-             xlim = c(df$start[1], length(for_spectrum@left)/for_spectrum@samp.rate*1000),
+             xlim = c(df$time_start[1], length(for_spectrum@left)/for_spectrum@samp.rate*1000),
              ylim = range(df$tier)+c(-0.4, 0.4),
              cex = 0,
              yaxt='n',
@@ -204,10 +261,16 @@ draw_sound <- function(file_name,
              xlab = "time(ms)",
              ylab = "",
              xaxs="i")
-        graphics::text(x = df$mid_point, y = df$tier, labels = df$annotation, cex = text_size)
         graphics::abline(h = unique(df$tier)[-length(unique(df$tier))]-0.5)
-        graphics::segments(x0 = df$start, x1 = df$start, y0 = df$tier-0.5, y1 = df$tier+0.5)
-        graphics::segments(x0 = df$end, x1 = df$end, y0 = df$tier-0.5, y1 = df$tier+0.5)
+        graphics::segments(x0 = df$time_start, x1 = df$time_start,
+                           y0 = df$tier-0.5, y1 = df$tier+0.5)
+        graphics::segments(x0 = df$time_end, x1 = df$time_end,
+                           y0 = df$tier-0.5, y1 = df$tier+0.5)
+        graphics::points(x = df[df$content != "", "mid_point"],
+                         y = df[df$content != "", "tier"],
+                         col="white", pch=19, cex = text_size+1.5)
+        graphics::text(x = df$mid_point, y = df$tier, labels = df$content,
+                       cex = text_size)
         graphics::axis(1, cex.axis=text_size)
       }
       # reset graphical parameters to default -----------------------------------
@@ -221,16 +284,21 @@ draw_sound <- function(file_name,
                      height = output_height,
                      units = output_units)
       draw_sound(file_name = file_name,
-                 textgrid = textgrid,
+                 annotation = annotation,
                  from = from,
                  to = to,
                  zoom = zoom,
                  text_size = text_size,
                  title = title,
-                 spectrum_colors = spectrum_colors,
-                 maximum_frequency = maximum_frequency,
-                 dynamic_range = dynamic_range,
                  window_length = window_length,
+                 window = window,
+                 windowparameter = windowparameter,
+                 freq_scale = freq_scale,
+                 frequency_range = frequency_range,
+                 dynamic_range = dynamic_range,
+                 preemphasisf = preemphasisf,
+                 spectrum_info = spectrum_info,
+                 raven_annotation = raven_annotation,
                  output_file = NULL)
       supress_message <- grDevices::dev.off()
     }
@@ -284,14 +352,19 @@ draw_sound <- function(file_name,
 
     lapply(seq_along(sounds), function(i){
       draw_sound(sounds[i],
-                 textgrid = textgrids[i],
+                 annotation = textgrids[i],
                  output_file = paste0(pics[i], suffix[i]),
                  title = switch(title_as_filename+1, NULL, names[i]),
                  text_size = text_size,
-                 spectrum_colors = spectrum_colors,
-                 maximum_frequency = maximum_frequency,
-                 dynamic_range = dynamic_range,
                  window_length = window_length,
+                 window = window,
+                 windowparameter = windowparameter,
+                 freq_scale = freq_scale,
+                 frequency_range = frequency_range,
+                 dynamic_range = dynamic_range,
+                 preemphasisf = preemphasisf,
+                 spectrum_info = spectrum_info,
+                 raven_annotation = raven_annotation,
                  output_width = output_width,
                  output_height = output_height,
                  output_units = output_units,

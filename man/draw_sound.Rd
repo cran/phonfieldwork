@@ -6,17 +6,22 @@
 \usage{
 draw_sound(
   file_name,
-  textgrid = NULL,
+  annotation = NULL,
   from = NULL,
   to = NULL,
   zoom = NULL,
   text_size = 1,
   output_file = NULL,
   title = NULL,
-  spectrum_colors = FALSE,
-  maximum_frequency = 5000,
+  freq_scale = "kHz",
+  frequency_range = c(0, 5),
   dynamic_range = 50,
   window_length = 5,
+  window = "kaiser",
+  windowparameter = -1,
+  preemphasisf = 50,
+  spectrum_info = TRUE,
+  raven_annotation = NULL,
   output_width = 750,
   output_height = 500,
   output_units = "px",
@@ -32,7 +37,7 @@ draw_sound(
 \arguments{
 \item{file_name}{a sound file}
 
-\item{textgrid}{a source for TextGrid annotation plot}
+\item{annotation}{a source for annotation files (e. g. TextGrid)}
 
 \item{from}{Time in seconds at which to start extraction.}
 
@@ -46,13 +51,23 @@ draw_sound(
 
 \item{title}{the title for the plot}
 
-\item{spectrum_colors}{if TRUE, a color spectrogram will be displayed. If FALSE, greyscale is used. If a vector of colors is provided, these colors are used to create the spectrogram.}
+\item{freq_scale}{a string indicating the type of frequency scale. Supported types are: "Hz" and "kHz".}
 
-\item{maximum_frequency}{the maximum frequency to be displayed for the spectrogram up to a maximum of fs/2. This is set to 5000 Hz by default}
+\item{frequency_range}{vector with the range of frequencies to be displayed for the spectrogram up to a maximum of fs/2. This is set to 0-5 kHz by default}
 
 \item{dynamic_range}{values greater than this many dB below the maximum will be displayed in the same color}
 
 \item{window_length}{the desired analysis window length in milliseconds.}
+
+\item{window}{A string indicating the type of window desired. Supported types are: "rectangular", "hann", "hamming", "cosine", "bartlett", "gaussian", and "kaiser".}
+
+\item{windowparameter}{The parameter necessary to generate the window, if appropriate. At the moment, the only windows that require parameters are the Kaiser and Gaussian windows. By default, these are set to 2 for kaiser and 0.4 for gaussian windows.}
+
+\item{preemphasisf}{Preemphasis of 6 dB per octave is added to frequencies above the specified frequency. For no preemphasis, set to a frequency higher than the sampling frequency.}
+
+\item{spectrum_info}{logical. If \code{TRUE} then add information about windo method and params.}
+
+\item{raven_annotation}{Raven (Center for Conservation Bioacoustics) style annotations (boxes over spectrogram). The dataframe that contains \code{time_start}, \code{time_end}, \code{freq_low} and \code{freq_high} columns. Optional columns are \code{colors} and \code{content}.}
 
 \item{output_width}{the width of the device}
 
@@ -81,8 +96,12 @@ Oscilogram and spectrogram plot (and possibly TextGrid annotation).
 Create oscilogram and spectrogram plot.
 }
 \examples{
+\dontrun{
 draw_sound(system.file("extdata", "test.wav", package = "phonfieldwork"))
 
+draw_sound(system.file("extdata", "test.wav", package = "phonfieldwork"),
+           system.file("extdata", "test.TextGrid", package = "phonfieldwork"))
+}
 }
 \author{
 George Moroz <agricolamz@gmail.com>

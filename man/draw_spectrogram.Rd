@@ -8,20 +8,20 @@ draw_spectrogram(
   sound,
   fs = 22050,
   text_size = 1,
-  windowlength = 5,
+  window_length = 5,
+  dynamic_range = 50,
+  window = "kaiser",
+  windowparameter = -1,
+  freq_scale = "kHz",
+  spectrum_info = TRUE,
   timestep = -1000,
   padding = 10,
   preemphasisf = 50,
-  maxfreq = 5000,
-  colors = FALSE,
-  dynamicrange = 50,
-  nlevels = dynamicrange,
-  show = TRUE,
-  window = "kaiser",
-  windowparameter = 3,
-  quality = FALSE,
+  frequency_range = c(0, 5),
+  nlevels = dynamic_range,
   x_axis = TRUE,
-  title = NULL
+  title = NULL,
+  raven_annotation = NULL
 )
 }
 \arguments{
@@ -31,7 +31,17 @@ draw_spectrogram(
 
 \item{text_size}{numeric, text size (default = 1).}
 
-\item{windowlength}{The desired analysis window length in milliseconds.}
+\item{window_length}{The desired analysis window length in milliseconds.}
+
+\item{dynamic_range}{Values greater than this many dB below the maximum will be displayed in the same color.}
+
+\item{window}{A string indicating the type of window desired. Supported types are: rectangular, hann, hamming, cosine, bartlett, gaussian, and kaiser.}
+
+\item{windowparameter}{The parameter necessary to generate the window, if appropriate. At the moment, the only windows that require parameters are the Kaiser and Gaussian windows. By default, these are set to 2 for kaiser and 0.4 for gaussian windows.}
+
+\item{freq_scale}{a string indicating the type of frequency scale. Supported types are: "Hz" and "kHz".}
+
+\item{spectrum_info}{logical. If \code{TRUE} then add information about windo method and params.}
 
 \item{timestep}{If a negative value is given, -N, then N equally-spaced time steps are calculated. If a positive number is given, this is the spacing between adjacent analyses, in milliseconds.}
 
@@ -39,28 +49,22 @@ draw_spectrogram(
 
 \item{preemphasisf}{Preemphasis of 6 dB per octave is added to frequencies above the specified frequency. For no preemphasis, set to a frequency higher than the sampling frequency.}
 
-\item{maxfreq}{the maximum frequency to be displayed for the spectrogram up to a maximum of fs/2. This is set to 5000 Hz by default.}
-
-\item{colors}{If TRUE, a color spectrogram will be displayed. If FALSE, greyscale is used. If a vector of colors is provided, these colors are used to create the spectrogram.}
-
-\item{dynamicrange}{Values greater than this many dB below the maximum will be displayed in the same color.}
+\item{frequency_range}{vector with the range of frequencies to be displayed for the spectrogram up to a maximum of \code{fs}/2. This is set to 0-5 kHz by default.}
 
 \item{nlevels}{The number of divisions to be used for the z-axis of the spectrogram. By default it is set equal to the dynamic range, meaning that a single color represents 1 dB on the z-axis.}
 
-\item{show}{If FALSE, no spectrogram is plotted. This is useful if the user would like to perform an action on an existing spectrogram plot without having to redraw it.}
-
-\item{window}{the window to be applied to the signal, applied by the windowfunc function in this package.}
-
-\item{windowparameter}{the parameter for the window to be applied to the signal, if appropriate.}
-
-\item{quality}{If TRUE, a contour plot is created, which results in a high-quality image that may be slow to plot. If FALSE, a lower-quality image is created that plots much faster.}
-
-\item{x_axis}{If TRUE then draw x axis.}
+\item{x_axis}{If \code{TRUE} then draw x axis.}
 
 \item{title}{Character with the title.}
+
+\item{raven_annotation}{Raven (Center for Conservation Bioacoustics) style annotations (boxes over spectrogram). The dataframe that contains \code{time_start}, \code{time_end}, \code{freq_low} and \code{freq_high} columns. Optional columns are \code{colors} and \code{content}.}
 }
 \description{
 This function was slightly changed from \code{phonTools::spectrogram()}. Argument description is copied from \code{phonTools::spectrogram()}.
+}
+\examples{
+\dontrun{draw_spectrogram(system.file("extdata", "test.wav", package = "phonfieldwork"))}
+
 }
 \author{
 Santiago Barreda <sbarreda@ucdavis.edu>
