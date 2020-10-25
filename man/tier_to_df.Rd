@@ -4,24 +4,31 @@
 \alias{tier_to_df}
 \title{TextGrid's tier to dataframe}
 \usage{
-tier_to_df(file_name, tier = 1, encoding = "unknown")
+tier_to_df(file_name, tier = 1)
 }
 \arguments{
 \item{file_name}{string with a filename or path to the TextGrid}
 
-\item{tier}{value that could be either ordinal number of the tier either name of the tier. By default is '1'.}
-
-\item{encoding}{TextGrid encoding. Import from \code{readLines()} function.}
+\item{tier}{value that could be either ordinal number of the tier either
+name of the tier. By default is '1'.}
 }
 \value{
-a dataframe with columns:  \code{id}, \code{time_start}, \code{time_end}, \code{content}
+a dataframe with columns:  \code{id}, \code{time_start},
+\code{time_end}, \code{content}, , \code{tier_name}
 }
 \description{
 Convert selected tier from a Praat TextGrid to a dataframe.
 }
 \examples{
-tier_to_df(system.file("extdata", "test.TextGrid", package = "phonfieldwork"))
-
+tier_to_df(system.file("extdata", "test.TextGrid",
+  package = "phonfieldwork"
+))
+tier_to_df(
+  system.file("extdata", "test.TextGrid",
+    package = "phonfieldwork"
+  ),
+  "intervals"
+)
 }
 \author{
 George Moroz <agricolamz@gmail.com>

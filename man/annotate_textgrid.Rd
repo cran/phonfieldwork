@@ -10,8 +10,7 @@ annotate_textgrid(
   tier = 1,
   each = 1,
   backup = TRUE,
-  write = TRUE,
-  encoding = "unknown"
+  write = TRUE
 )
 }
 \arguments{
@@ -19,27 +18,32 @@ annotate_textgrid(
 
 \item{textgrid}{character with a filename or path to the TextGrid}
 
-\item{tier}{value that could be either ordinal number of the tier either name of the tier}
+\item{tier}{value that could be either ordinal number of the tier either name
+of the tier}
 
 \item{each}{non-negative integer. Each element of x is repeated each times}
 
 \item{backup}{logical. If TRUE (by default) it creates a backup tier.}
 
 \item{write}{logical. If TRUE (by dafault) it overwrites an existing tier.}
-
-\item{encoding}{TextGrid encoding. Import from \code{readLines()} function.}
 }
 \value{
-a string that contain TextGrid. If argument write is \code{TRUE}, then no output.
+a string that contain TextGrid. If argument write is \code{TRUE},
+then no output.
 }
 \description{
-Annotates textgrids. It is possible to difine step in the argument "each", so each second element of the tier will be annotated.
+Annotates textgrids. It is possible to define step in the argument "each",
+so each second element of the tier will be annotated.
 }
 \examples{
-annotate_textgrid(annotation = c("", "t", "e", "s", "t"),
-                  textgrid = system.file("extdata", "test.TextGrid", package = "phonfieldwork"),
-                  tier = 2, write = FALSE)
-
+annotate_textgrid(
+  annotation = c("", "t", "e", "s", "t"),
+  textgrid = system.file("extdata",
+    "test.TextGrid",
+    package = "phonfieldwork"
+  ),
+  tier = 2, write = FALSE
+)
 }
 \author{
 George Moroz <agricolamz@gmail.com>

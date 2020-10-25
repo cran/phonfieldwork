@@ -11,8 +11,7 @@ extract_intervals(
   prefix = NULL,
   suffix = NULL,
   autonumber = TRUE,
-  path,
-  encoding = "unknown"
+  path
 )
 }
 \arguments{
@@ -20,38 +19,42 @@ extract_intervals(
 
 \item{textgrid}{path to the TextGrid}
 
-\item{tier}{tier number or name that should be used as base for extraction and names}
+\item{tier}{tier number or name that should be used as base for extraction
+and names}
 
 \item{prefix}{character vector containing prefix(es) for file names}
 
 \item{suffix}{character vector containing suffix(es) for file names}
 
-\item{autonumber}{if TRUE automatically add number of extracted sound to the file_name. Prevents from creating a duplicated files and wrong sorting.}
+\item{autonumber}{if TRUE automatically add number of extracted sound to the
+file_name. Prevents from creating a duplicated files and wrong sorting.}
 
 \item{path}{path to the directory where create extracted soundfiles.}
-
-\item{encoding}{TextGrid encoding. Import from \code{readLines()} function.}
 }
 \value{
 no output
 }
 \description{
-Extract sound according to non-empty annotated intervals from TextGrid and create soundfiles with correspondent names.
+Extract sound according to non-empty annotated intervals from TextGrid and
+create soundfiles with correspondent names.
 }
 \examples{
 # create two files in a temprary folder "test_folder"
-s <-  system.file("extdata", "test.wav", package = "phonfieldwork")
+s <- system.file("extdata", "test.wav", package = "phonfieldwork")
 tdir <- tempdir()
 file.copy(s, tdir)
 
 # Extract intervals according the TextGrid into the path
-extract_intervals(file_name = paste0(tdir, "/test.wav"),
-                  textgrid = system.file("extdata", "test.TextGrid", package = "phonfieldwork"),
-                  path = tdir)
+extract_intervals(
+  file_name = paste0(tdir, "/test.wav"),
+  textgrid = system.file("extdata", "test.TextGrid",
+    package = "phonfieldwork"
+  ),
+  path = tdir
+)
 
 list.files(tdir)
-# [1] "e-2.wav" "s-3.wav" "t-1.wav" "t-4.wav" "test.TextGrid" "test.wav"
-
+# [1] "e-2.wav" "s-3.wav" "t-1.wav" "t-4.wav" "test.wav"
 }
 \author{
 George Moroz <agricolamz@gmail.com>

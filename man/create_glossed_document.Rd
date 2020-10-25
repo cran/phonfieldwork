@@ -9,22 +9,35 @@ create_glossed_document(
   rows = c("gls"),
   output_dir,
   output_file = "glossed_document",
-  output_format = "docx"
+  output_format = "html",
+  example_pkg = NULL
 )
 }
 \arguments{
-\item{flextext}{path to a .flextext file.}
+\item{flextext}{path to a .flextext file or a dataframe with the following
+columns: \code{p_id}, \code{s_id}, \code{w_id}, \code{txt}, \code{cf},
+\code{hn}, \code{gls}, \code{msa}, \code{morph}, \code{word}, \code{phrase},
+\code{paragraph}, \code{free_trans}, \code{text}, \code{text_title}}
 
-\item{rows}{vector of row names from the flextext that should appear in the final document. Possible values are: "cf", "hn", "gls", "msa". "gls" is default.}
+\item{rows}{vector of row names from the flextext that should appear in the
+final document. Possible values are: "cf", "hn", "gls", "msa". "gls" is
+default.}
 
 \item{output_dir}{the output directory for the rendered file}
 
-\item{output_file}{the name of the result .html file (by default stimuli_viewer)}
+\item{output_file}{the name of the result \code{.html} file (by default
+\code{glossed_document}).}
 
 \item{output_format}{The option can be "html" or "docx"}
+
+\item{example_pkg}{vector with name of the LaTeX package for glossing
+(possible values: \code{"gb4e"}, \code{"langsci"}, \code{"expex"},
+\code{"philex"})}
 }
 \value{
-If \code{render} is \code{FALSE}, the function returns a path to the temporary file with .csv file. If \code{render} is \code{TRUE}, there is no output in a function.
+If \code{render} is \code{FALSE}, the function returns a path to
+the temporary file with .csv file. If \code{render} is \code{TRUE}, there is
+no output in a function.
 }
 \description{
 Creates a file with glossed example (export from .flextext or other formats)

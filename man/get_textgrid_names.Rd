@@ -4,12 +4,10 @@
 \alias{get_textgrid_names}
 \title{Extract TextGrid names}
 \usage{
-get_textgrid_names(textgrid, encoding = "unknown")
+get_textgrid_names(textgrid)
 }
 \arguments{
 \item{textgrid}{path to the TextGrid}
-
-\item{encoding}{TextGrid encoding. Import from \code{readLines()} function.}
 }
 \value{
 return a vector of tier names from given TextGrid
@@ -18,8 +16,9 @@ return a vector of tier names from given TextGrid
 Extract TextGrid names.
 }
 \examples{
-get_textgrid_names(system.file("extdata", "test.TextGrid", package = "phonfieldwork"))
-
+get_textgrid_names(system.file("extdata", "test.TextGrid",
+  package = "phonfieldwork"
+))
 }
 \author{
 George Moroz <agricolamz@gmail.com>

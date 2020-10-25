@@ -4,22 +4,21 @@
 \alias{exb_to_df}
 \title{EXMARaLDA's .exb file to dataframe}
 \usage{
-exb_to_df(file_name, exbs_from_folder = NULL)
+exb_to_df(file_name)
 }
 \arguments{
 \item{file_name}{string with a filename or path to the .exb file}
-
-\item{exbs_from_folder}{path to a folder with multiple .exb files. If this argument is not \code{NULL}, then the function goes through all files and create a merged dataframe for all of them.}
 }
 \value{
-a dataframe with columns:  \code{tier}, \code{id}, \code{content}, \code{tier_name}, \code{tier_type}, \code{tier_category}, \code{tier_speaker}, \code{time_start}, \code{time_end}, \code{source}.
+a dataframe with columns:  \code{tier}, \code{id}, \code{content},
+\code{tier_name}, \code{tier_type}, \code{tier_category},
+\code{tier_speaker}, \code{time_start}, \code{time_end}, \code{source}.
 }
 \description{
 Convert .exb file from EXMARaLDA to a dataframe.
 }
 \examples{
 exb_to_df(system.file("extdata", "test.exb", package = "phonfieldwork"))
-
 }
 \author{
 George Moroz <agricolamz@gmail.com>
