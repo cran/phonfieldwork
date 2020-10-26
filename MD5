@@ -1,4 +1,4 @@
-5ec13b8f09546baae06dc217d2e5e1a8 *DESCRIPTION
+027e7b2f6cc9843cd635d0c29b948d25 *DESCRIPTION
 4bc796d170da4d113456647414cf8547 *NAMESPACE
 670c437987abaa97497f0a35539fd4d8 *NEWS.md
 fae6eecd3e49d1673a5fe057d31d8315 *R/annotate_textgrid.R
@@ -31,11 +31,11 @@ c72c962071fcca7c2f34fe4caaa0ffa9 *R/srt_to_df.R
 07f712d2ba7d955cc77835adbe3035e7 *R/utils.r
 8a857f7450b5040e7dd9dce6cb052bb7 *build/vignette.rds
 4663ad56f54645d85d166a9e4de5c8e1 *inst/CITATION
-7aaf34c1b30ecd577130d2cd65a1e388 *inst/doc/data_manipulation_with_tidyverse.Rmd
-058d395672b1d64a79eb6451394ce76a *inst/doc/data_manipulation_with_tidyverse.html
+566a8c161ae2a2f02fa09bef0436d7ae *inst/doc/data_manipulation_with_tidyverse.Rmd
+cb86462bf4ea999b8a34e7db276e7063 *inst/doc/data_manipulation_with_tidyverse.html
 3c9e2d06e8560272e30c98b0c827478b *inst/doc/ethical_research_with_phonfieldwork.R
 489cf5565f9c0737ede944569e8907e6 *inst/doc/ethical_research_with_phonfieldwork.Rmd
-70411fa6c59a31c817ab6963df9736c7 *inst/doc/ethical_research_with_phonfieldwork.html
+9a57ad1bd878bb1474ebfb42e2a9f06b *inst/doc/ethical_research_with_phonfieldwork.html
 68a81fdd08663e81a7e08ecb49ea501c *inst/doc/phonfieldwork.Rmd
 10b739564f1c99a95f664013f4eaeefa *inst/doc/phonfieldwork.html
 8e79a8613b7d005814aaa5d4428b2460 *inst/extdata/e.Formant
@@ -119,7 +119,7 @@ dc5121599d187524100aa2f7bbf2d800 *tests/testthat/test-set-textgrid-names.R
 71defb32ddbc9e926ec67aa4d9fcb406 *tests/testthat/test-textgrid-to-df.R
 0ef20f27a19a0b5d149aced995bd06f1 *tests/testthat/test-tier-to-df.R
 aed3436f088a6e3142fc7e7742c4fb1f *vignettes/bibliography.bib
-7aaf34c1b30ecd577130d2cd65a1e388 *vignettes/data_manipulation_with_tidyverse.Rmd
+566a8c161ae2a2f02fa09bef0436d7ae *vignettes/data_manipulation_with_tidyverse.Rmd
 489cf5565f9c0737ede944569e8907e6 *vignettes/ethical_research_with_phonfieldwork.Rmd
 68a81fdd08663e81a7e08ecb49ea501c *vignettes/phonfieldwork.Rmd
 8df1fd78fa89bdf78df8c6f21029f0b7 *vignettes/unnamed-chunk-10-1.png
