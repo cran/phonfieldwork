@@ -1,7 +1,7 @@
 Package: phonfieldwork
 Type: Package
 Title: Linguistic Phonetic Fieldwork Tools
-Version: 0.0.9
+Version: 0.0.10
 Depends: R (>= 3.5.0)
 Imports: tuneR, phonTools, grDevices, utils, graphics, rmarkdown, xml2,
         uchardet, tools
@@ -37,12 +37,11 @@ RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Suggests: knitr, dplyr, tidyr, DT, lingtypology, testthat
 Language: en-US
-Config/testthat/parallel: true
 NeedsCompilation: no
-Packaged: 2020-10-26 07:30:58 UTC; agricolamz
+Packaged: 2020-11-12 18:38:56 UTC; agricolamz
 Author: George Moroz [aut, cre] (<https://orcid.org/0000-0003-1990-6083>),
   Jonathan Keane [rev] (<https://orcid.org/0000-0001-7087-9776>),
   Niko Partanen [rev] (<https://orcid.org/0000-0001-8584-3880>)
 Maintainer: George Moroz <agricolamz@gmail.com>
 Repository: CRAN
-Date/Publication: 2020-10-26 13:00:02 UTC
+Date/Publication: 2020-11-23 14:10:02 UTC
