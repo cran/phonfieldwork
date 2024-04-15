@@ -1,7 +1,7 @@
 ---
 title: "Manipulating `phonfieldwork` data with `tidyverse`"
 author: "George Moroz, [NRU HSE Linguistic Convergence Laboratory](https://ilcl.hse.ru/en/)"
-date: "2021-03-02"
+date: "2024-04-08"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Manipulating `phonfieldwork` data with `tidyverse`}
@@ -42,22 +42,7 @@ If we convert this file to R we will achieve something like this:
 
 ```r
 textgrid_to_df("s1/s1_all.TextGrid")
-#>    id time_start  time_end      content tier     tier_name          source
-#> 1   1  0.0000000 0.4821542          tip    1        labels s1_all.TextGrid
-#> 4   1  0.0000000 0.4821542 1_s1_tip.wav    2 backup labels s1_all.TextGrid
-#> 7   1  0.0000000 0.1072426                 3               s1_all.TextGrid
-#> 8   2  0.1072426 0.1887230            ı    3               s1_all.TextGrid
-#> 9   3  0.1887230 0.4821542                 3               s1_all.TextGrid
-#> 2   2  0.4821542 0.9120635          tap    1        labels s1_all.TextGrid
-#> 5   2  0.4821542 0.9120635 2_s1_tap.wav    2 backup labels s1_all.TextGrid
-#> 10  4  0.4821542 0.5770552                 3               s1_all.TextGrid
-#> 11  5  0.5770552 0.6793392            æ    3               s1_all.TextGrid
-#> 12  6  0.6793392 0.9120635                 3               s1_all.TextGrid
-#> 3   3  0.9120635 1.3942177          top    1        labels s1_all.TextGrid
-#> 6   3  0.9120635 1.3942177 3_s1_top.wav    2 backup labels s1_all.TextGrid
-#> 13  7  0.9120635 1.0364661                 3               s1_all.TextGrid
-#> 14  8  1.0364661 1.1066780            ɒ    3               s1_all.TextGrid
-#> 15  9  1.1066780 1.3942177                 3               s1_all.TextGrid
+#> Error in file(file_name, encoding = readr::guess_encoding(file_name)$encoding): invalid 'encoding' argument
 ```
 
 As we see this table has a long format structure: each observation has its own row. We can select the first two rows with the `filter()` function, remove all unnecessary columns with the `select()` function and spread everything in a table with the `pivot_wider()` function:
@@ -68,12 +53,7 @@ textgrid_to_df("s1/s1_all.TextGrid") %>%
   filter(tier %in% 1:2) %>% 
   select(-time_start, -time_end, -tier_name) %>% 
   pivot_wider(names_from = tier, values_from = content)
-#> # A tibble: 3 x 4
-#>      id source          `1`   `2`         
-#>   <dbl> <chr>           <chr> <chr>       
-#> 1     1 s1_all.TextGrid tip   1_s1_tip.wav
-#> 2     2 s1_all.TextGrid tap   2_s1_tap.wav
-#> 3     3 s1_all.TextGrid top   3_s1_top.wav
+#> Error in file(file_name, encoding = readr::guess_encoding(file_name)$encoding): invalid 'encoding' argument
 ```
 
 ## .flextext format
@@ -83,6 +63,7 @@ Imagine that we obtained the first result from `flextext_to_df()`:
 
 ```r
 df <- flextext_to_df("files/zilo_test.flextext")
+#> It can take some time for big files...
 head(df)
 #>   p_id s_id w_id    txt     cf hn     gls                   msa                free_trans
 #> 1    1    1    1     б-     б-  1      an Inflects any category Жил-был (у Гъули?) петух.
@@ -124,22 +105,23 @@ df %>%
   group_by(p_id, s_id, free_trans, w_id) %>% 
   summarise(txt = str_c(txt, collapse = ""),
          gls = str_c(gls, collapse = "-"))
-#> `summarise()` has grouped output by 'p_id', 's_id', 'free_trans'. You can override using the `.groups` argument.
-#> # A tibble: 136 x 6
+#> `summarise()` has grouped output by 'p_id', 's_id', 'free_trans'. You can override using
+#> the `.groups` argument.
+#> # A tibble: 136 × 6
 #> # Groups:   p_id, s_id, free_trans [19]
-#>     p_id  s_id free_trans                        w_id txt              gls                       
-#>    <dbl> <dbl> <chr>                            <dbl> <chr>            <chr>                     
-#>  1     1     1 Жил-был (у Гъули?) петух.            1 б-ик1-о-й=гъоди  "an-быть-pst-cvb(pf)-=rep"
-#>  2     1     1 Жил-был (у Гъули?) петух.            2 б--о-ч1игу=гъоди "an--pst-neg.cvb-=rep"    
-#>  3     1     1 Жил-был (у Гъули?) петух.            3 Гъули-б          "Гъули-an(gen)"           
-#>  4     1     1 Жил-был (у Гъули?) петух.            4 х1елеко          "петух"                   
-#>  5     1     1 Жил-был (у Гъули?) петух.            5 .                ""                        
-#>  6     2     2 Он грелся на улице(?).               6 къват1и-ла=гъоди "улица-in-=rep"           
-#>  7     2     2 Он грелся на улице(?).               7 б-ик1-о-j        "an-быть-pst-cvb(pf)"     
-#>  8     2     2 Он грелся на улице(?).               8 букьир-ъа        "Букир-sup"               
-#>  9     2     2 Он грелся на улице(?).               9 .                ""                        
-#> 10     2     3 [Ему в ногу] воткнулась колючка.    10 къинни-й=гъоди   "втыкаться-cvb(pf)-=rep"  
-#> # … with 126 more rows
+#>     p_id  s_id free_trans                        w_id txt              gls                
+#>    <dbl> <dbl> <chr>                            <dbl> <chr>            <chr>              
+#>  1     1     1 Жил-был (у Гъули?) петух.            1 б-ик1-о-й=гъоди  "an-быть-pst-cvb(p…
+#>  2     1     1 Жил-был (у Гъули?) петух.            2 б--о-ч1игу=гъоди "an--pst-neg.cvb-=…
+#>  3     1     1 Жил-был (у Гъули?) петух.            3 Гъули-б          "Гъули-an(gen)"    
+#>  4     1     1 Жил-был (у Гъули?) петух.            4 х1елеко          "петух"            
+#>  5     1     1 Жил-был (у Гъули?) петух.            5 .                ""                 
+#>  6     2     2 Он грелся на улице(?).               6 къват1и-ла=гъоди "улица-in-=rep"    
+#>  7     2     2 Он грелся на улице(?).               7 б-ик1-о-j        "an-быть-pst-cvb(p…
+#>  8     2     2 Он грелся на улице(?).               8 букьир-ъа        "Букир-sup"        
+#>  9     2     2 Он грелся на улице(?).               9 .                ""                 
+#> 10     2     3 [Ему в ногу] воткнулась колючка.    10 къинни-й=гъоди   "втыкаться-cvb(pf)…
+#> # ℹ 126 more rows
 ```
 
 The first `filter()` removes some garbage rows that are present in our example flextext. The `select()` function selects only six important columns from 15 presented in the dataset. The `group_by()` and `summarise()` merge all text from `txt` variable and all glosses from `gls` variable together. Pipe operater `%>% ` make it possible to pass the result from the previous funstion as an input to the following one.
@@ -157,31 +139,33 @@ df %>%
   group_by(p_id, s_id, free_trans) %>% 
   summarise(txt = str_c(txt, collapse = " "),
          gls = str_c(gls, collapse = " "))
-#> `summarise()` has grouped output by 'p_id', 's_id', 'free_trans'. You can override using the `.groups` argument.
-#> `summarise()` has grouped output by 'p_id', 's_id'. You can override using the `.groups` argument.
-#> # A tibble: 19 x 5
+#> `summarise()` has grouped output by 'p_id', 's_id', 'free_trans'. You can override using
+#> the `.groups` argument.
+#> `summarise()` has grouped output by 'p_id', 's_id'. You can override using the `.groups`
+#> argument.
+#> # A tibble: 19 × 5
 #> # Groups:   p_id, s_id [19]
-#>     p_id  s_id free_trans                       txt                           gls                         
-#>    <dbl> <dbl> <chr>                            <chr>                         <chr>                       
-#>  1     1     1 "Жил-был (у Гъули?) петух."      б-ик1-о-й=гъоди б--о-ч1игу=г… "an-быть-pst-cvb(pf)-=rep a…
-#>  2     2     2 "Он грелся на улице(?)."         къват1и-ла=гъоди б-ик1-о-j б… "улица-in-=rep an-быть-pst-…
-#>  3     2     3 "[Ему в ногу] воткнулась колючк… къинни-й=гъоди ццана .        "втыкаться-cvb(pf)-=rep кол…
-#>  4     3     4 "Когда колючка воткнулась, [он]… ццана къинни-рбигьи б-uʔ-oн-… "колючка втыкаться-pst.ptcp…
-#>  5     4     5 "Гъули не обнаружил дома Бихтай… бихьтай=ло ишуишу й-ис-он-ч1… "Бихтай-=add дома-дома f-на…
-#>  6     5     6 "Оттуда пошел к Умалаю, "        б-uʔ-oн-ни=гъоди гьербади гь… "an-идти-pst-pst(aor)-=rep …
-#>  7     6     7 "Оттуда петух пошел к Патимат."  х1елеко гье-лъу-кку б-ел1-и-… "петух dem-dat-el an-go-pst…
-#>  8     8    10 "Оттуда [петух] пошел к Ханичай… гье-лъу-кку б--и-й б-uʔ-oн-н… "dem-dat-el an--pst(aor)-cv…
-#>  9     9    11 "Иди к Хурмат, ..."              хъаничай-ди=ло ен-л1и бежун … "Ханичай-erg-=add rfl-gen.s…
-#> 10    10    12 "Когда дошёл до двора Хурмат, и… рул1-и-й Х1урмати-л1и рей-ди… "говорить--cvb(pf) Хурмат-g…
-#> 11    11    13 "Три дня не ели, мы с ней не зн… рул1-и-й лъоб-гу зубу в-укк-… "говорить--cvb(pf) три-num …
-#> 12    12    14 "Оттуда он ушёл и дошёл до Айша… гье-лъу-кку б--и-йб--и-й б-о… "dem-dat-el an--pst(aor)-cv…
-#> 13    13    15 "Захраил …?"                     й--и-й Загьраъил-ди=ло б-укъ… "f--pst(aor)-cvb(pf) Захрай…
-#> 14    14    16 "И он пошел в село. Захраил ска… б-укъ-и-й гьеге-б=ло гьон-л1… "an-гнать-pst-pf dem-an-=ad…
-#> 15    15    17 "Оттуда снизу вверх к Исрапилу … гьегелъу-кку гьикьу=ло лъоба… "там-el внизу-=add вверх -a…
-#> 16    16    18 "Шли-шли и пришли к Гаджи."      гье-лъу-кку б--и-йб--и-й б-о… "dem-dat-el an--pst(aor)-cv…
-#> 17    17    19 "Они поссорились (?) и прогнали… й-ейхъ-у й-ах-о-й дунял б-ед… "f-ругать-pst f-драться-pst…
-#> 18    18    20 "Когда закончили ссориться, [по… джид-ия сабаб=ло б-ул1-и-й б… "делать-fut причина-=add an…
-#> 19    19    21 "На воротах Забита петух обнару… х1елеко б--и-й забити-б кауд… "петух an--pst(aor)-cvb(pf)…
+#>     p_id  s_id free_trans                                                      txt   gls  
+#>    <dbl> <dbl> <chr>                                                           <chr> <chr>
+#>  1     1     1 "Жил-был (у Гъули?) петух."                                     б-ик… "an-…
+#>  2     2     2 "Он грелся на улице(?)."                                        къва… "ули…
+#>  3     2     3 "[Ему в ногу] воткнулась колючка."                              къин… "вты…
+#>  4     3     4 "Когда колючка воткнулась, [он] ушел к Бихтаю."                 ццан… "кол…
+#>  5     4     5 "Гъули не обнаружил дома Бихтай, дома ее нет, из себя не вынул… бихь… "Бих…
+#>  6     5     6 "Оттуда пошел к Умалаю, "                                       б-uʔ… "an-…
+#>  7     6     7 "Оттуда петух пошел к Патимат."                                 х1ел… "пет…
+#>  8     8    10 "Оттуда [петух] пошел к Ханичай."                               гье-… "dem…
+#>  9     9    11 "Иди к Хурмат, ..."                                             хъан… "Хан…
+#> 10    10    12 "Когда дошёл до двора Хурмат, из окна появился мальчик, сказал… рул1… "гов…
+#> 11    11    13 "Три дня не ели, мы с ней не зная, сказал он."                  рул1… "гов…
+#> 12    12    14 "Оттуда он ушёл и дошёл до Айшат Исмаиловой и её не обнаружив,… гье-… "dem…
+#> 13    13    15 "Захраил …?"                                                    й--и… "f--…
+#> 14    14    16 "И он пошел в село. Захраил сказала, что колючка воткнулась в … б-ук… "an-…
+#> 15    15    17 "Оттуда снизу вверх к Исрапилу ..."                             гьег… "там…
+#> 16    16    18 "Шли-шли и пришли к Гаджи."                                     гье-… "dem…
+#> 17    17    19 "Они поссорились (?) и прогнали (?) петуха."                    й-ей… "f-р…
+#> 18    18    20 "Когда закончили ссориться, [пошли?] к Забиту."                 джид… "дел…
+#> 19    19    21 "На воротах Забита петух обнаружил замок и пошел к Зумайрат."   х1ел… "пет…
 ```
 
 It is also very easy to get some simple statistics from the data:
@@ -195,11 +179,11 @@ df %>%
 #> Selecting by n
 #>        gls  n
 #> 1     =add 46
-#> 2     ¬an1 34
-#> 3       an 49
-#> 4  cvb(pf) 63
-#> 5      pst 28
-#> 6 pst(aor) 74
+#> 2       an 49
+#> 3  cvb(pf) 63
+#> 4      pst 28
+#> 5 pst(aor) 74
+#> 6     ¬an1 34
 ```
 
 Here with the `filter()` function we remove all empty glosses, then we calculate and sort them according to frequency, and in the end we take top six glosses with the `top_n()` function. We can even visualis it with the `ggplot2` package:

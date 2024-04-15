@@ -1,7 +1,15 @@
+# phonfieldwork 0.0.12
+
+- add a `separate_duration` argument to the `concatenate_soundfiles()` function that makes it possible to use some silent separator during the file concatenation.
+- make `rename_soundfiles()` function to work with mp3 files.
+- fix the bug with `"` sign in textgrids.
+- make pictures optional in the `create_viewer()` function
+- add the `df_to_exb()` function; thanks to Valeria Buntiakova #43
+
 # phonfieldwork 0.0.11
 
 - correct empty tiers behavior #34 (thanks to Shungo Suzuki)
-- add possibility to have different values in the `n_of_annotations` argument of `create_subannotation()` (thanks to Zhenya Korovina for the idea)
+- add possibility to have different values in the `n_of_annotations` argument of `create_subannotation()` (thanks to Jenya Korovina for the idea)
 - rename `tier` argument of the `create_empty_textgrid()` to `tier_name`.
 - create the `remove_textgrid_tier()` function.
 

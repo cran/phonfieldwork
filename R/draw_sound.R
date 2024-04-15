@@ -69,7 +69,7 @@
 #' @return Oscilogram and spectrogram plot (and possibly TextGrid annotation).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' draw_sound(system.file("extdata", "test.wav", package = "phonfieldwork"))
 #'
 #' draw_sound(
@@ -157,7 +157,7 @@ draw_sound <- function(file_name,
       oldpar <- graphics::par(no.readonly = TRUE)
       on.exit(graphics::par(oldpar))
       # read file and convert to phonTools format -------------------------------
-      if (class(file_name) == "Wave") {
+      if (isa(file_name, "Wave")) {
         s <- file_name
       } else {
         ext <- tolower(tools::file_ext(file_name))
@@ -294,7 +294,7 @@ draw_sound <- function(file_name,
 
       if (!is.null(pitch)) {
         graphics::par(fig = c(0, 0.97, low_boundary, upper_boundary), new = TRUE)
-        if (class(pitch) != "data.frame") {
+        if (!inherits(pitch, "data.frame")) {
           pitch <- phonfieldwork::pitch_to_df(pitch)
         }
 

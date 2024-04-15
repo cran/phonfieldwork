@@ -4,12 +4,15 @@
 \alias{read_from_folder}
 \title{Read multiple files from the folder}
 \usage{
-read_from_folder(path, type)
+read_from_folder(path, type = "textgrid")
 }
 \arguments{
 \item{path}{to a folder with multiple sound files.}
 
 \item{type}{should be one of the following: "duration", "audacity", "eaf", "exb", "flextext", "formant", "intensity", "picth", "srt", "textgrid"}
+}
+\value{
+dataframe with contents of all files of a selected type
 }
 \description{
 This function reads multiple files from the folder. The first argument is the path, the second argument is the type of files to read.

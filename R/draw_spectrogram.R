@@ -47,8 +47,10 @@
 #' columns. Optional columns are \code{colors} and \code{content}.
 #' @param formant_df dataframe with formants from \code{formant_to_df()} function
 #'
+#' @return Plot the comptued spectrogram
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' draw_spectrogram(system.file("extdata", "test.wav",
 #'   package = "phonfieldwork"
 #' ))
@@ -87,7 +89,7 @@ draw_spectrogram <- function(sound,
   # This function is slightly modification of phonTools::spectrogram()
   # by Santiago Barreda <sbarreda@ucdavis.edu>
 
-  if (class(sound) != "integer" & class(sound) != "numeric") {
+  if (!inherits(sound, "integer") & !inherits(sound,  "numeric")) {
     ext <- tolower(tools::file_ext(sound))
 
     if (ext == "wave" | ext == "wav") {

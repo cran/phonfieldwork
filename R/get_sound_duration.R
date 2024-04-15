@@ -6,6 +6,8 @@
 #'
 #' @param file_name a sound file
 #'
+#' @return Dataframe with two columns: file name and duration
+#'
 #' @examples
 #' get_sound_duration(
 #'   system.file("extdata", "test.wav", package = "phonfieldwork")
@@ -17,7 +19,7 @@
 #' @importFrom tools file_ext
 
 get_sound_duration <- function(file_name) {
-  if (class(file_name) == "Wave") {
+  if (isa(file_name, "Wave")) {
     s <- file_name
     source <- "custom_file"
     duration <- length(s@left) / s@samp.rate
@@ -31,7 +33,7 @@ get_sound_duration <- function(file_name) {
       s <- tuneR::readMP3(file_name)
       duration <- length(s@left) / s@samp.rate
     } else {
-      stop("The get_sound_durations() functions works only with .wav(e)
+      stop("The get_sound_duration() functions works only with .wav(e)
              or .mp3 formats")
     }
     source <- basename(file_name)
