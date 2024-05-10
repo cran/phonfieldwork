@@ -1,3 +1,11 @@
+# phonfieldwork 0.0.14
+
+- small fix
+
+# phonfieldwork 0.0.13
+
+- fix encoding detection
+
 # phonfieldwork 0.0.12
 
 - add a `separate_duration` argument to the `concatenate_soundfiles()` function that makes it possible to use some silent separator during the file concatenation.
