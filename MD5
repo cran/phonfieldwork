@@ -1,6 +1,6 @@
-a2e6b24a11add3ae5ab6b3afc67f240b *DESCRIPTION
+a04e28d85543edaf309764b8754fc054 *DESCRIPTION
 2ec187a5800227f0e54342a40c24d2b9 *NAMESPACE
-6b5b25400524f0ca5cc5096a5062c279 *NEWS.md
+b85b1fd9c9e0f8c65db4d451679057fa *NEWS.md
 fae6eecd3e49d1673a5fe057d31d8315 *R/annotate_textgrid.R
 3937767600679ead570e5c05d7203a36 *R/audacity_to_df.R
 a18a1c4d51cabd9b6501004788a3b2f2 *R/concatenate_soundfiles.R
@@ -12,7 +12,7 @@ a18a1c4d51cabd9b6501004788a3b2f2 *R/concatenate_soundfiles.R
 ce782c369d0a143b3b74777b8a2837ac *R/create_viewer.R
 b11e0d662b3f2dbf98f9683b369d0d86 *R/df_to_eaf.R
 f29c9fad4cffa982c0921d5551935ee1 *R/df_to_exb.r
-7db881a74e131e52270dce2ee32cb543 *R/df_to_tier.R
+33c6964e1d9fa8e1a16430745d98180f *R/df_to_tier.R
 dd5cdc63b084b80e25ddac382d2e797f *R/draw_sound.R
 0b6ffd24a88e8ff0a7eb236e8e93457e *R/draw_spectrogram.R
 1b4f9d0a13353846ed3a093dd9e33553 *R/eaf_to_df.R
@@ -32,13 +32,13 @@ f3419765b10d268d08c495468d182424 *R/srt_to_df.R
 492486d806a205fe35210253e04609f4 *R/textgrid_to_df.R
 05a60d6e75f7cd8574d3d3b1c8681079 *R/tier_to_df.R
 02923e880dac0326a8bb15eac7b09f3a *R/utils.r
-fb801e544b44c79cac682e9a1e2f1fff *build/vignette.rds
+aa4ba84e04a66ed0a22bc92fe34fa40e *build/vignette.rds
 7a922d3a7036a21a3293752df23b9078 *inst/CITATION
 37a5c5c9a865403f65675f83535ce2bb *inst/doc/data_manipulation_with_tidyverse.Rmd
 6168cf293e325cf8a8f004569b247372 *inst/doc/data_manipulation_with_tidyverse.html
 5e270ae6034b339c2a13d20a5f7d2dec *inst/doc/ethical_research_with_phonfieldwork.R
 489cf5565f9c0737ede944569e8907e6 *inst/doc/ethical_research_with_phonfieldwork.Rmd
-415842d4b52a07574338695d81d24039 *inst/doc/ethical_research_with_phonfieldwork.html
+4422bf99b193a02d8f64946ff7345fcf *inst/doc/ethical_research_with_phonfieldwork.html
 9967b53768fd2ae4dc57fdee34f4bd19 *inst/doc/phonfieldwork.Rmd
 8383814935bb25aa521282db8e0e7c58 *inst/doc/phonfieldwork.html
 9d4b4feee9978e4424e3e465f2eb9824 *inst/extdata/demo_Beckhams.exb
