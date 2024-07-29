@@ -1,7 +1,7 @@
 Package: phonfieldwork
 Type: Package
 Title: Linguistic Phonetic Fieldwork Tools
-Version: 0.0.15
+Version: 0.0.17
 Depends: R (>= 3.5.0)
 Imports: tuneR, phonTools, grDevices, utils, graphics, rmarkdown, xml2,
         readr, tools, mime
@@ -38,16 +38,16 @@ URL: https://CRAN.R-project.org/package=phonfieldwork,
         https://docs.ropensci.org/phonfieldwork/
 BugReports: https://github.com/ropensci/phonfieldwork/issues
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Suggests: knitr, tidyr, dplyr, DT, lingtypology, testthat, readxl
 Language: en-US
 NeedsCompilation: no
-Packaged: 2024-07-13 19:12:24 UTC; agricolamz
+Packaged: 2024-07-29 17:16:24 UTC; agricolamz
 Author: George Moroz [aut, cre] (<https://orcid.org/0000-0003-1990-6083>),
   Jonathan Keane [rev] (<https://orcid.org/0000-0001-7087-9776>),
   Niko Partanen [rev] (<https://orcid.org/0000-0001-8584-3880>),
   Valeria Buntiakova [ctb] (<https://orcid.org/0000-0003-2409-2651>)
 Maintainer: George Moroz <agricolamz@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-07-13 19:30:02 UTC
+Date/Publication: 2024-07-29 17:40:02 UTC

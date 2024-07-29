@@ -8,6 +8,8 @@ test_that("df_to_tier", {
                    overwrite = FALSE
   )
 
+  readLines(system.file("extdata", "test.TextGrid", package = "phonfieldwork"))
+
   expect_error(
     df_to_tier(my_df[-2],
       system.file("extdata", "test.TextGrid",
@@ -20,5 +22,5 @@ test_that("df_to_tier", {
       '"time_start" and "time_end"'
     )
   )
-  expect_length(tg, 104)
+  expect_length(tg, 108)
 })

@@ -17,7 +17,7 @@
 #' time_start <- c(0.00000000, 0.01246583, 0.24781914, 0.39552363, 0.51157715)
 #' time_end <- c(0.01246583, 0.24781914, 0.39552363, 0.51157715, 0.65267574)
 #' content <- c("", "T", "E", "S", "T")
-#' df_to_tier(my_df <- data.frame(id = 1:5, time_start, time_end, content),
+#' df_to_tier(data.frame(id = 1:5, time_start, time_end, content),
 #'   system.file("extdata", "test.TextGrid",
 #'     package = "phonfieldwork"
 #'   ),
@@ -37,10 +37,13 @@ df_to_tier <- function(df, textgrid, tier_name = "", overwrite = TRUE) {
     ))
   }
 
+  df <- df[which(names(df) %in% c("time_start", "time_end", "content"))]
+
   tg <- read_textgrid(textgrid)
 
   n_tiers <- as.numeric(gsub("\\D", "", tg[7]))
   tg[7] <- paste0("size = ", n_tiers + 1, " ")
+  textgrid_duration <- gsub("[a-z\\=\\s]", "", tg[5]) |> as.double()
 
   if (!(FALSE %in% (df$time_start == df$time_end))) {
     df <- df[, -which(names(df) %in% "time_end")]
@@ -48,14 +51,28 @@ df_to_tier <- function(df, textgrid, tier_name = "", overwrite = TRUE) {
 
   if (TRUE %in% (df$time_end[-nrow(df)] != df$time_start[-1])){
     wrong_time_end <- which(df$time_end[-nrow(df)] != df$time_start[-1])
-    silence <- lapply(wrong_time_end, function(i){
+    silence <- lapply(rev(wrong_time_end), function(i){
       df <<- rbind(df[c(1:i),],
                    data.frame(time_start = df$time_end[i],
                               time_end = df$time_start[i+1],
                               content = ""),
-                   df[-c(1:i),]
-            )
+                   df[-c(1:i),])
     })
+  }
+
+  if("time_end" %in% names(df)){
+    if(df$time_end[nrow(df)] != textgrid_duration){
+      df <- rbind(df,
+                  data.frame(time_start = df$time_end[nrow(df)],
+                             time_end = textgrid_duration,
+                             content = ""))
+    }
+  } else {
+    if(df$time_start[nrow(df)] != textgrid_duration){
+      df <- rbind(df,
+                  data.frame(time_start = df$time_start[nrow(df)],
+                             content = ""))
+    }
   }
 
   tier_class <- ifelse("time_end" %in% names(df),
